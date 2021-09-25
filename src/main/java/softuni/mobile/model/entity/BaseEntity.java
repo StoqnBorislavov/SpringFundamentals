@@ -41,4 +41,13 @@ public abstract class BaseEntity {
     public void setModified(Instant modified) {
         this.modified = modified;
     }
+
+    @PrePersist
+    public void beforeCreate(){
+        this.created = Instant.now();
+    }
+    @PostPersist
+    public void onUpdate(){
+        this.modified = Instant.now();
+    }
 }
