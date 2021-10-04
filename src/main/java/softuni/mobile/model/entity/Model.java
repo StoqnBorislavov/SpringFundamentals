@@ -4,6 +4,7 @@ package softuni.mobile.model.entity;
 import softuni.mobile.model.enums.Category;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "models")
