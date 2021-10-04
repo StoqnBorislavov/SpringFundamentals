@@ -3,6 +3,7 @@ package softuni.mobile.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import softuni.mobile.User.CurrentUser;
 import softuni.mobile.model.entity.User;
 import softuni.mobile.model.entity.UserRole;
 import softuni.mobile.model.enums.UserRoleEnum;
@@ -21,12 +22,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final CurrentUser currentUser;
 
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleRepository userRoleRepository, CurrentUser currentUser) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -82,9 +85,30 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = this.userRepository.findByUsername(loginServiceModel.getUsername());
 
         if(optionalUser.isEmpty()){
+            this.logout();
             return false;
         } else {
-            return passwordEncoder.matches(loginServiceModel.getRawPassword(), optionalUser.get().getPassword());
+            boolean success = passwordEncoder.matches(loginServiceModel.getRawPassword(), optionalUser.get().getPassword());
+            if(success){
+                User loggedInUser = optionalUser.get();
+                currentUser.setLoggedIn(true)
+                        .setUsername(loggedInUser.getUsername())
+                        .setFirstName(loggedInUser.getFirstName())
+                        .setLastName(loggedInUser.getLastName());
+                loggedInUser.getRoles().
+                        forEach(r -> currentUser.addRole(r.getRole()));
+            }
+            return success;
         }
+    }
+
+    @Override
+    public void logout() {
+        currentUser.clean();
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return this.userRepository.findByUsername(username).orElse(null);
     }
 }

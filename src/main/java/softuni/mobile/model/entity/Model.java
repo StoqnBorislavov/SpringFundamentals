@@ -1,10 +1,9 @@
 package softuni.mobile.model.entity;
 
 
-import softuni.mobile.model.enums.Category;
+import softuni.mobile.model.enums.CategoryEnum;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity
 @Table(name = "models")
@@ -14,7 +13,7 @@ public class Model extends BaseEntity{
     private String name;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private CategoryEnum categoryEnum;
     @Column(nullable = false)
     private String imageUrl;
     @Column(nullable = false)
@@ -35,12 +34,12 @@ public class Model extends BaseEntity{
         return this;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryEnum getCategory() {
+        return categoryEnum;
     }
 
-    public Model setCategory(Category category) {
-        this.category = category;
+    public Model setCategory(CategoryEnum categoryEnum) {
+        this.categoryEnum = categoryEnum;
         return this;
     }
 

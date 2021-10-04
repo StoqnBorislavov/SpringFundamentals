@@ -1,20 +1,23 @@
 package softuni.mobile.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import softuni.mobile.model.entity.Brand;
 import softuni.mobile.model.entity.Model;
-import softuni.mobile.model.enums.Category;
+import softuni.mobile.model.enums.CategoryEnum;
 import softuni.mobile.repository.ModelRepository;
 import softuni.mobile.service.BrandService;
 import softuni.mobile.service.ModelService;
 
-import java.time.Instant;
 import java.util.List;
 
+@Service
 public class ModelServiceImpl implements ModelService {
 
     private final ModelRepository modelRepository;
     private final BrandService brandService;
 
+    @Autowired
     public ModelServiceImpl(ModelRepository modelRepository, BrandService brandService) {
         this.modelRepository = modelRepository;
         this.brandService = brandService;
@@ -28,7 +31,7 @@ public class ModelServiceImpl implements ModelService {
             Brand ford = this.brandService.findByName("Ford");
             Model fiesta = new Model();
             fiesta.setBrand(ford).
-                    setCategory(Category.CAR).
+                    setCategory(CategoryEnum.CAR).
                     setName("Fiesta").
                     setStartYear(1976).
                     setImageUrl(
@@ -36,7 +39,7 @@ public class ModelServiceImpl implements ModelService {
 
             Model escort = new Model();
             escort.setBrand(ford).
-                    setCategory(Category.CAR).
+                    setCategory(CategoryEnum.CAR).
                     setName("Escort").
                     setStartYear(1967).
                     setEndYear(2004).
@@ -48,5 +51,10 @@ public class ModelServiceImpl implements ModelService {
             this.modelRepository.save(escort);
         }
 
+    }
+
+    @Override
+    public Model findById(Long id) {
+        return this.modelRepository.findById(id).orElse(null);
     }
 }
