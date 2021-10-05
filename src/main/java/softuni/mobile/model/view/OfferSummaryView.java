@@ -26,7 +26,18 @@ public class OfferSummaryView {
 
     private String model;
 
+    private Long id;
+
     public OfferSummaryView() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public OfferSummaryView setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getDescription() {

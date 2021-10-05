@@ -8,6 +8,7 @@ import softuni.mobile.model.entity.User;
 import softuni.mobile.model.entity.UserRole;
 import softuni.mobile.model.enums.UserRoleEnum;
 import softuni.mobile.model.service.UserLoginServiceModel;
+import softuni.mobile.model.service.UserRegisterServiceModel;
 import softuni.mobile.repository.UserRepository;
 import softuni.mobile.repository.UserRoleRepository;
 import softuni.mobile.service.UserService;
@@ -110,5 +111,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return this.userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public void registerAndLoginUser(UserRegisterServiceModel userRegisterServiceModel) {
+
+        UserRole userRole = this.userRoleRepository.findByRole(UserRoleEnum.USER);
+
+        User newUser = new User();
+        newUser
+                .setUsername(userRegisterServiceModel.getUsername())
+                .setFirstName(userRegisterServiceModel.getFirstName())
+                .setLastName(userRegisterServiceModel.getLastName())
+                .setActive(true)
+                .setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()))
+                .setRoles(Set.of(userRole));
+        this.userRepository.save(newUser);
+        this.login(newUser);
+    }
+
+    @Override
+    public boolean isUsernameFree(String username) {
+        return this.userRepository.findByUsernameIgnoreCase(username).isEmpty();
+    }
+
+    private void login(User user) {
+        currentUser.
+                setLoggedIn(true).
+                setUsername(user.getUsername()).
+                setFirstName(user.getFirstName()).
+                setLastName(user.getLastName());
     }
 }
