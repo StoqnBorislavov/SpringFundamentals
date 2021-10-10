@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import softuni.mobile.model.entity.Offer;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
+import softuni.mobile.model.view.OfferDetailsView;
 import softuni.mobile.model.view.OfferSummaryView;
 import softuni.mobile.repository.OfferRepository;
 import softuni.mobile.service.ModelService;
@@ -72,9 +73,24 @@ public class OfferServiceImpl implements OfferService {
 
     }
 
+    @Override
+    public OfferDetailsView findById(Long id) {
+        OfferDetailsView offerDetailsView = this.offerRepository.findById(id).map(this::mapDetailsView).get();
+        return offerDetailsView;
+    }
+
     private OfferSummaryView map(Offer offer) {
         OfferSummaryView offerSummaryView = this.modelMapper.map(offer, OfferSummaryView.class);
         offerSummaryView.setModel(offer.getModel().getName());
+        offerSummaryView.setBrand(offer.getModel().getBrand().getName());
         return offerSummaryView;
+    }
+
+    private OfferDetailsView mapDetailsView(Offer offer) {
+        OfferDetailsView offerDetailsView = this.modelMapper.map(offer, OfferDetailsView.class);
+        offerDetailsView.setModel(offer.getModel().getName());
+        offerDetailsView.setBrand(offer.getModel().getBrand().getName());
+        offerDetailsView.setSellerFullName(offer.getSeller().getFirstName() + " " + offer.getSeller().getLastName());
+        return offerDetailsView;
     }
 }

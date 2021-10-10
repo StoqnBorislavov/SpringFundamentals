@@ -37,7 +37,7 @@
                 <!--- Logout start -------->
                 <li th:if="${@currentUser.isLoggedIn()}" class="nav-item">
                     <div class="form-inline my-2 my-lg-0 border px-3">
-                        <div>Welcome, <th:block th:text="${@currentUser.getFirstName()}"></th:block></div>
+                        <div class="text-white">Welcome, <th:block th:text="${@currentUser.getFirstName()}"></th:block></div>
                         <a class="nav-link" th:href="@{/users/logout}">Logout</a>
                     </div>
                 </li>

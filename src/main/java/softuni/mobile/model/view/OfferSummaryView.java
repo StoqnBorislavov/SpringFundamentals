@@ -26,6 +26,8 @@ public class OfferSummaryView {
 
     private String model;
 
+    private String brand;
+
     private Long id;
 
     public OfferSummaryView() {
@@ -109,6 +111,15 @@ public class OfferSummaryView {
 
     public OfferSummaryView setModel(String model) {
         this.model = model;
+        return this;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public OfferSummaryView setBrand(String brand) {
+        this.brand = brand;
         return this;
     }
 }
