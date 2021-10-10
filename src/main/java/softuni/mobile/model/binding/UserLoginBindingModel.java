@@ -1,6 +1,9 @@
 package softuni.mobile.model.binding;
 
+import javax.validation.constraints.NotNull;
+
 public class UserLoginBindingModel {
+    @NotNull
     private String username;
     private String password;
 

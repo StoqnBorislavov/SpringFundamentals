@@ -4,7 +4,7 @@ spring:
     # Put here your user name
     username: root
     # Put here your password
-    password: Adamanta5@
+    password:
     url: jdbc:mysql://localhost:3306/spring_data_lab_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
   jpa:
     #For MySQL 8 uncomment bellow (comment MySQL 5)

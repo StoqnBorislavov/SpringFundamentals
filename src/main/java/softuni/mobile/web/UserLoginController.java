@@ -5,11 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.mobile.model.binding.UserLoginBindingModel;
 import softuni.mobile.model.service.UserLoginServiceModel;
 import softuni.mobile.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserLoginController {
@@ -23,12 +28,22 @@ public class UserLoginController {
     }
 
     @GetMapping("/users/login")
-    public String login(){
+    public String login(Model model){
+        model.addAttribute("isExists", true);
         return "auth-login";
     }
     @PostMapping("/users/login")
-    public String login(UserLoginBindingModel userLoginBindingModel){
+    public String login(@Valid UserLoginBindingModel userLoginBindingModel,
+                        BindingResult bindingResult,
+                        RedirectAttributes redirectAttributes){
 
+        if(bindingResult.hasErrors()){
+            redirectAttributes
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel",
+                            bindingResult);
+            return "redirect:/users/login";
+        }
         boolean loginSuccessful = userService.login(new UserLoginServiceModel()
                 .setUsername(userLoginBindingModel.getUsername())
                 .setRawPassword(userLoginBindingModel.getPassword()));
@@ -41,6 +56,6 @@ public class UserLoginController {
             return "redirect:/";
         }
 
-        return "redirect:/users/login";
+        return "redirect:login";
     }
 }

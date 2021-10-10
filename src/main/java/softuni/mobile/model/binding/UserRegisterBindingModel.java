@@ -12,8 +12,11 @@ public class UserRegisterBindingModel {
     @NotNull
     @Size(min = 4, max = 20)
     private String lastName;
+    @NotNull
     private String password;
+    @NotNull
     private String confirmPassword;
+    @NotNull
     private String username;
 
     public UserRegisterBindingModel() {

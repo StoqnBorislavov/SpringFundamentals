@@ -48,7 +48,7 @@ public class UserRegistrationController {
                            Model model) {
         //TODO: validation
 
-        if(result.hasErrors()){
+        if(result.hasErrors() || !userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())){
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel", result);
             return "redirect:/users/register";
