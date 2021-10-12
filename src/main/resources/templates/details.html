@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head th:replace="fragments/head::head"></head>
 
@@ -33,8 +33,14 @@
                 </li>
             </ul>
             <div class="card-body">
-                <a class="card-link" href="/">Update</a>
-                <a class="card-link" href="/">Delete</a>
+                <div class="row">
+                    <a class="btn btn-link" href="/">Update</a>
+
+                    <form th:action="@{/offers/{id}(id = *{id})" th:method="delete">
+                        <input type="submit" class="btn btn-link" href="/">Delete</input>
+                    </form>
+                </div>
+
             </div>
         </div>
         <div th:each="o : ${offer}" th:object="${o}"
