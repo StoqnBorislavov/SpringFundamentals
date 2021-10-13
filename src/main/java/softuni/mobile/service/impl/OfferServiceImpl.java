@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import softuni.mobile.model.entity.Offer;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
+import softuni.mobile.model.service.OfferUpdateServiceModel;
 import softuni.mobile.model.view.OfferDetailsView;
 import softuni.mobile.model.view.OfferSummaryView;
 import softuni.mobile.repository.OfferRepository;
 import softuni.mobile.service.ModelService;
 import softuni.mobile.service.OfferService;
 import softuni.mobile.service.UserService;
+import softuni.mobile.web.exception.ObjectNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,6 +84,24 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void deleteOffer(Long id) {
         offerRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateOffer(OfferUpdateServiceModel offerModel) {
+        Offer offer = offerRepository.findById(offerModel.getId())
+                .orElseThrow(()->
+                        new ObjectNotFoundException("Offer with " + offerModel.getId() + " not found!"));
+
+        offer
+                .setPrice(offerModel.getPrice())
+                .setDescription(offerModel.getDescription())
+                .setEngine(offerModel.getEngine())
+                .setImageUrl(offerModel.getImageUrl())
+                .setMileage(offerModel.getMileage())
+                .setTransmission(offerModel.getTransmission())
+                .setYear(offerModel.getYear());
+
+        offerRepository.save(offer);
     }
 
     private OfferSummaryView map(Offer offer) {

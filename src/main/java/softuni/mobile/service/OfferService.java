@@ -1,6 +1,7 @@
 package softuni.mobile.service;
 
 import softuni.mobile.model.entity.Offer;
+import softuni.mobile.model.service.OfferUpdateServiceModel;
 import softuni.mobile.model.view.OfferDetailsView;
 import softuni.mobile.model.view.OfferSummaryView;
 
@@ -14,4 +15,6 @@ public interface OfferService {
     OfferDetailsView findById(Long id);
 
     void deleteOffer(Long id);
+
+    void updateOffer(OfferUpdateServiceModel offerModel);
 }
