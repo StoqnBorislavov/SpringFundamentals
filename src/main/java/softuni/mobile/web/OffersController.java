@@ -65,6 +65,14 @@ public class OffersController {
         return "update";
     }
 
+
+    @GetMapping("/offers/{id}/edit/errors")
+    public String editOfferErrors(@PathVariable Long id, Model model){
+        model.addAttribute("engines", EngineEnum.values());
+        model.addAttribute("transmissions", TransmissionEnum.values());
+        return "update";
+    }
+
     // We will update the object partial, because of that we use Patch.
     @PatchMapping("/offers/{id}/edit")
     public  String editOffer(@PathVariable Long id,
@@ -77,7 +85,7 @@ public class OffersController {
                     .addFlashAttribute("offerModel", offerModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.offerModel",
                             bindingResult);
-            return "redirect:/users/login";
+            return "redirect:/offers/" + id + "/edit/errors";
         }
 
         OfferUpdateServiceModel serviceModel =

@@ -23,7 +23,7 @@
                        th:field="*{mileage}"
                        th:errorclass="is-invalid"
                        th:type="number"
-                       min="0" max="900000" step="1000"
+                       min="0" max="900000" step="50"
                        class="form-control"
                        placeholder="Mileage in kilometers"/>
                 <p class="invalid-feedback errors alert alert-danger">
@@ -39,7 +39,7 @@
                         min="0" step="100" class="form-control"
                        placeholder="Suggested price"/>
                 <p class="invalid-feedback errors alert alert-danger">
-                    Suggested price is required.
+                    Suggested price is required and should be more than 100 BGN.
                 </p>
             </div>
         </div>

@@ -46,25 +46,24 @@ public class UserRegistrationController {
                            BindingResult result,
                            RedirectAttributes redirectAttributes,
                            Model model) {
-        //TODO: validation
 
         if(result.hasErrors() || !userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())){
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel", result);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", result);
             return "redirect:/users/register";
         }
 
         UserRegisterServiceModel serviceModel =
                 modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class);
 
-        if (!this.userService.isUsernameFree(serviceModel.getUsername())) {
-            redirectAttributes.addFlashAttribute("userNameOccupied", true);
-            return "redirect:/users/register";
-        } else {
+//        if (!this.userService.isUsernameFree(serviceModel.getUsername())) {
+//            redirectAttributes.addFlashAttribute("userNameOccupied", true);
+//            return "redirect:/users/register";
+//        } else {
 
             userService.registerAndLoginUser(serviceModel);
 
             return "redirect:/";
-        }
+//        }
     }
 }

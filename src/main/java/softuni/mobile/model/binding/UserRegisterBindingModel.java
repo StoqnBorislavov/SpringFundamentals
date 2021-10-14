@@ -1,6 +1,8 @@
 package softuni.mobile.model.binding;
 
 
+import softuni.mobile.model.validator.UniqueUserName;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -17,6 +19,7 @@ public class UserRegisterBindingModel {
     @NotNull
     private String confirmPassword;
     @NotNull
+    @UniqueUserName
     private String username;
 
     public UserRegisterBindingModel() {
