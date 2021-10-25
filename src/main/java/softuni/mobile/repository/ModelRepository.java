@@ -6,4 +6,5 @@ import softuni.mobile.model.entity.Model;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
+    Model findByName(String model);
 }

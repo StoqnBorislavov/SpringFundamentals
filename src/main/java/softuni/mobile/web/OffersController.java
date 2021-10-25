@@ -4,16 +4,18 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import softuni.mobile.User.CurrentUser;
+import softuni.mobile.model.binding.OfferAddBindingModel;
 import softuni.mobile.model.binding.OfferUpdateBindingModel;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
+import softuni.mobile.model.service.OfferAddServiceModel;
 import softuni.mobile.model.service.OfferUpdateServiceModel;
 import softuni.mobile.model.view.OfferDetailsView;
+import softuni.mobile.service.BrandService;
+import softuni.mobile.service.ModelService;
 import softuni.mobile.service.OfferService;
 
 import javax.validation.Valid;
@@ -23,10 +25,16 @@ public class OffersController {
 
     private final OfferService offerService;
     private final ModelMapper modelMapper;
+    private final BrandService brandService;
+    private final ModelService modelService;
+    private final CurrentUser currentUser;
 
-    public OffersController(OfferService offerService, ModelMapper modelMapper) {
+    public OffersController(OfferService offerService, ModelMapper modelMapper, BrandService brandService, ModelService modelService, CurrentUser currentUser) {
         this.offerService = offerService;
         this.modelMapper = modelMapper;
+        this.brandService = brandService;
+        this.modelService = modelService;
+        this.currentUser = currentUser;
     }
 
     @GetMapping("/offers/all")
@@ -95,6 +103,33 @@ public class OffersController {
 
         return "redirect:/offers/" + id + "/details";
 
+    }
+
+    @GetMapping("/offers/add")
+    public String addOffer(Model model){
+        if (!currentUser.isLoggedIn()) {
+            return "redirect:/users/login";
+        }
+        if (!model.containsAttribute("offerAddBindingModel")) {
+            model.addAttribute("offerAddBindingModel", new OfferAddBindingModel()).
+                    addAttribute("brandsModels", brandService.findAllBrands());
+        }
+        return "offer-add";
+    }
+
+    @PostMapping("/offers/add")
+    public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel", bindingResult)
+                    .addFlashAttribute("brandsModels", brandService.findAllBrands());
+            return "redirect:add";
+        }
+
+        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel);
+        return "redirect:/offers/" + savedOfferAddServiceModel.getId() + "/details";
     }
 
 }

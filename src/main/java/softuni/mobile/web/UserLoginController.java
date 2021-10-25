@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.mobile.model.binding.UserLoginBindingModel;
@@ -29,7 +30,7 @@ public class UserLoginController {
 
     @GetMapping("/users/login")
     public String login(Model model){
-        model.addAttribute("isExists", true);
+//        model.addAttribute("isExists", true);
         return "auth-login";
     }
     @PostMapping("/users/login")
@@ -52,10 +53,22 @@ public class UserLoginController {
                 userLoginBindingModel.getUsername(),
                 loginSuccessful);
 
-        if(loginSuccessful){
-            return "redirect:/";
+        if(!loginSuccessful){
+            redirectAttributes
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel",
+                            bindingResult)
+                    .addFlashAttribute("isExists", true);
+
+            return "redirect:login";
         }
 
-        return "redirect:login";
+        return "redirect:/";
+    }
+
+    @ModelAttribute
+    public UserLoginBindingModel userLoginBindingModel(){
+        return new UserLoginBindingModel();
+
     }
 }

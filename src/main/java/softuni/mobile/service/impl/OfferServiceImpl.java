@@ -3,9 +3,13 @@ package softuni.mobile.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.mobile.User.CurrentUser;
+import softuni.mobile.model.binding.OfferAddBindingModel;
+import softuni.mobile.model.entity.Model;
 import softuni.mobile.model.entity.Offer;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
+import softuni.mobile.model.service.OfferAddServiceModel;
 import softuni.mobile.model.service.OfferUpdateServiceModel;
 import softuni.mobile.model.view.OfferDetailsView;
 import softuni.mobile.model.view.OfferSummaryView;
@@ -15,6 +19,7 @@ import softuni.mobile.service.OfferService;
 import softuni.mobile.service.UserService;
 import softuni.mobile.web.exception.ObjectNotFoundException;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +30,15 @@ public class OfferServiceImpl implements OfferService {
     private final ModelMapper modelMapper;
     private final ModelService modelService;
     private final UserService userService;
+    private final CurrentUser currentUser;
 
     @Autowired
-    private OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelService modelService, UserService userService) {
+    private OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelService modelService, UserService userService, CurrentUser currentUser) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.modelService = modelService;
         this.userService = userService;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -40,7 +47,7 @@ public class OfferServiceImpl implements OfferService {
         if(this.offerRepository.count() == 0){
             Offer offer1 = new Offer();
             offer1.
-                    setModel(this.modelService.findById(1L)).
+                    setModel(this.modelService.findById(2L)).
                     setEngine(EngineEnum.GASOLINE).
                     setTransmission(TransmissionEnum.MANUAL).
                     setMileage(22500).
@@ -51,7 +58,7 @@ public class OfferServiceImpl implements OfferService {
                     setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/1996_Ford_Escort_RS_Cosworth_2.0_Front.jpg/280px-1996_Ford_Escort_RS_Cosworth_2.0_Front.jpg");
             Offer offer2 = new Offer();
             offer2.
-                    setModel(this.modelService.findById(2L)).
+                    setModel(this.modelService.findById(1L)).
                     setEngine(EngineEnum.DIESEL).
                     setTransmission(TransmissionEnum.AUTOMATIC).
                     setMileage(1200).
@@ -102,6 +109,18 @@ public class OfferServiceImpl implements OfferService {
                 .setYear(offerModel.getYear());
 
         offerRepository.save(offer);
+    }
+
+    @Override
+    public OfferAddServiceModel addOffer(OfferAddBindingModel offerAddBindingModel) {
+        OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindingModel, OfferAddServiceModel.class);
+        Offer newOffer = modelMapper.map(offerAddServiceModel, Offer.class);
+        newOffer.setCreated(Instant.now());
+        newOffer.setSeller(userService.findByUsername(currentUser.getUsername()));
+        Model model = modelService.findById(offerAddBindingModel.getModelId());
+        newOffer.setModel(model);
+        Offer savedOffer = offerRepository.save(newOffer);
+        return modelMapper.map(savedOffer, OfferAddServiceModel.class);
     }
 
     private OfferSummaryView map(Offer offer) {
