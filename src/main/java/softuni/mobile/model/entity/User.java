@@ -1,6 +1,4 @@
 package softuni.mobile.model.entity;
-
-
 import javax.persistence.*;
 import java.util.Set;
 
