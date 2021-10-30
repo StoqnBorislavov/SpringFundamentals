@@ -10,10 +10,6 @@ public interface UserService {
 
     void initializeUsersAndRoles();
 
-    boolean login(UserLoginServiceModel loginServiceModel);
-
-    void logout();
-
     User findByUsername(String username);
 
     void registerAndLoginUser(UserRegisterServiceModel userRegisterServiceModel);

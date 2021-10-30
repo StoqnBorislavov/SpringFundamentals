@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import softuni.mobile.User.CurrentUser;
+
 import softuni.mobile.model.binding.OfferAddBindingModel;
 import softuni.mobile.model.binding.OfferUpdateBindingModel;
 import softuni.mobile.model.enums.EngineEnum;
@@ -27,14 +27,13 @@ public class OffersController {
     private final ModelMapper modelMapper;
     private final BrandService brandService;
     private final ModelService modelService;
-    private final CurrentUser currentUser;
 
-    public OffersController(OfferService offerService, ModelMapper modelMapper, BrandService brandService, ModelService modelService, CurrentUser currentUser) {
+
+    public OffersController(OfferService offerService, ModelMapper modelMapper, BrandService brandService, ModelService modelService) {
         this.offerService = offerService;
         this.modelMapper = modelMapper;
         this.brandService = brandService;
         this.modelService = modelService;
-        this.currentUser = currentUser;
     }
 
     @GetMapping("/offers/all")
@@ -107,9 +106,6 @@ public class OffersController {
 
     @GetMapping("/offers/add")
     public String addOffer(Model model){
-        if (!currentUser.isLoggedIn()) {
-            return "redirect:/users/login";
-        }
         if (!model.containsAttribute("offerAddBindingModel")) {
             model.addAttribute("offerAddBindingModel", new OfferAddBindingModel()).
                     addAttribute("brandsModels", brandService.findAllBrands());

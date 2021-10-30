@@ -37,7 +37,6 @@ public class UserRegistrationController {
 
     @GetMapping("/users/register")
     public String registerUser() {
-
         return "auth-register";
     }
 

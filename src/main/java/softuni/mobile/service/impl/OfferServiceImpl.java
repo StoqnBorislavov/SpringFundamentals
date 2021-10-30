@@ -3,7 +3,6 @@ package softuni.mobile.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import softuni.mobile.User.CurrentUser;
 import softuni.mobile.model.binding.OfferAddBindingModel;
 import softuni.mobile.model.entity.Model;
 import softuni.mobile.model.entity.Offer;
@@ -30,15 +29,13 @@ public class OfferServiceImpl implements OfferService {
     private final ModelMapper modelMapper;
     private final ModelService modelService;
     private final UserService userService;
-    private final CurrentUser currentUser;
 
     @Autowired
-    private OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelService modelService, UserService userService, CurrentUser currentUser) {
+    private OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, ModelService modelService, UserService userService) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.modelService = modelService;
         this.userService = userService;
-        this.currentUser = currentUser;
     }
 
     @Override
@@ -116,7 +113,7 @@ public class OfferServiceImpl implements OfferService {
         OfferAddServiceModel offerAddServiceModel = modelMapper.map(offerAddBindingModel, OfferAddServiceModel.class);
         Offer newOffer = modelMapper.map(offerAddServiceModel, Offer.class);
         newOffer.setCreated(Instant.now());
-        newOffer.setSeller(userService.findByUsername(currentUser.getUsername()));
+//        newOffer.setSeller(userService.findByUsername(currentUser.getUsername()));
         Model model = modelService.findById(offerAddBindingModel.getModelId());
         newOffer.setModel(model);
         Offer savedOffer = offerRepository.save(newOffer);
