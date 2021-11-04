@@ -3,10 +3,6 @@ package softuni.mobile.model.view;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 public class OfferSummaryView {
 
 

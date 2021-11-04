@@ -1,7 +1,6 @@
 package softuni.mobile.service;
 
 import softuni.mobile.model.binding.OfferAddBindingModel;
-import softuni.mobile.model.entity.Offer;
 import softuni.mobile.model.service.OfferAddServiceModel;
 import softuni.mobile.model.service.OfferUpdateServiceModel;
 import softuni.mobile.model.view.OfferDetailsView;
@@ -20,5 +19,5 @@ public interface OfferService {
 
     void updateOffer(OfferUpdateServiceModel offerModel);
 
-    OfferAddServiceModel addOffer(OfferAddBindingModel offerAddBindingModel);
+    OfferAddServiceModel addOffer(OfferAddBindingModel offerAddBindingModel, String ownerId);
 }

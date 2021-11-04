@@ -14,7 +14,6 @@ import softuni.mobile.model.service.UserRegisterServiceModel;
 import softuni.mobile.service.UserService;
 
 import javax.validation.Valid;
-import java.net.http.HttpClient;
 
 @Controller
 public class UserRegistrationController {

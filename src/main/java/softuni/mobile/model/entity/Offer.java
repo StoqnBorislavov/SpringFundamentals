@@ -4,7 +4,6 @@ import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "offers")

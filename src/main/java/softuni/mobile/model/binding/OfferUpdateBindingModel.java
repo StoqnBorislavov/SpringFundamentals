@@ -3,7 +3,10 @@ package softuni.mobile.model.binding;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 public class OfferUpdateBindingModel {
 

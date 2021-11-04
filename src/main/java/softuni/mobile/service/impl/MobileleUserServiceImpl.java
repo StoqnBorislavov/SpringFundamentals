@@ -38,7 +38,6 @@ public class MobileleUserServiceImpl implements UserDetailsService {
                         .map(r -> new SimpleGrantedAuthority("ROLE_" +r.getRole().name()))
                         .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(), authorities);
+        return new MobileleUser(user.getUsername(), user.getPassword(), authorities);
     }
 }

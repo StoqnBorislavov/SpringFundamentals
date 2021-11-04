@@ -1,6 +1,5 @@
 package softuni.mobile.model.view;
 
-import softuni.mobile.model.entity.User;
 import softuni.mobile.model.enums.EngineEnum;
 import softuni.mobile.model.enums.TransmissionEnum;
 

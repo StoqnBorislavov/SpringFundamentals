@@ -1,12 +1,12 @@
 package softuni.mobile.web;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import softuni.mobile.model.binding.OfferAddBindingModel;
 import softuni.mobile.model.binding.OfferUpdateBindingModel;
 import softuni.mobile.model.enums.EngineEnum;
@@ -17,6 +17,7 @@ import softuni.mobile.model.view.OfferDetailsView;
 import softuni.mobile.service.BrandService;
 import softuni.mobile.service.ModelService;
 import softuni.mobile.service.OfferService;
+import softuni.mobile.service.impl.MobileleUser;
 
 import javax.validation.Valid;
 
@@ -116,7 +117,8 @@ public class OffersController {
     @PostMapping("/offers/add")
     public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes){
+                                  RedirectAttributes redirectAttributes,
+                                  @AuthenticationPrincipal MobileleUser user){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel", bindingResult)
@@ -124,7 +126,7 @@ public class OffersController {
             return "redirect:add";
         }
 
-        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel);
+        OfferAddServiceModel savedOfferAddServiceModel = offerService.addOffer(offerAddBindingModel, user.getUserIdentifier());
         return "redirect:/offers/" + savedOfferAddServiceModel.getId() + "/details";
     }
 

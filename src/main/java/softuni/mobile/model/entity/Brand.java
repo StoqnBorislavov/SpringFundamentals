@@ -1,12 +1,7 @@
 package softuni.mobile.model.entity;
 
 
-import org.hibernate.metamodel.model.domain.spi.IdentifiableTypeDescriptor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import javax.persistence.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity

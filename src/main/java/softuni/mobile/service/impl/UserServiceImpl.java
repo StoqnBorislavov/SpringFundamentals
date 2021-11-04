@@ -3,11 +3,9 @@ package softuni.mobile.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import softuni.mobile.model.entity.User;
 import softuni.mobile.model.entity.UserRole;
 import softuni.mobile.model.enums.UserRoleEnum;
-
 import softuni.mobile.model.service.UserRegisterServiceModel;
 import softuni.mobile.repository.UserRepository;
 import softuni.mobile.repository.UserRoleRepository;

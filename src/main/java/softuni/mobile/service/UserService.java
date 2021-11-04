@@ -1,9 +1,6 @@
 package softuni.mobile.service;
 
 import softuni.mobile.model.entity.User;
-import softuni.mobile.model.entity.UserRole;
-import softuni.mobile.model.enums.UserRoleEnum;
-import softuni.mobile.model.service.UserLoginServiceModel;
 import softuni.mobile.model.service.UserRegisterServiceModel;
 
 public interface UserService {
