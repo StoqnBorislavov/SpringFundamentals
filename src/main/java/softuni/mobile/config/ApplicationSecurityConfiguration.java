@@ -27,7 +27,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
+        http.requestCache().disable().
                 authorizeRequests().
                 // with this line we allow access to all static resources
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
@@ -38,6 +38,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                         antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name()).
                 // next we forbid all other pages for unauthenticated users.
                         antMatchers("/**").authenticated().
+
                 and().
                 // configure login with login HTML form with two input fileds
                         formLogin().
